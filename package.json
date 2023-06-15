@@ -1,0 +1,29 @@
+{
+  "name": "app",
+  "private": "true",
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.1",
+    "@hotwired/turbo-rails": "^7.3.0",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.0",
+    "bootstrap-icons": "^1.10.5",
+    "dompurify": "^3.0.3",
+    "easymde": "^2.18.0",
+    "esbuild": "^0.18.0",
+    "highlight.js": "^11.8.0",
+    "marked": "^5.1.0",
+    "react": "^18.2.0",
+    "react-d3-graph18": "^2.6.6",
+    "react-dom": "^18.2.0",
+    "react-flow-renderer": "^10.3.17",
+    "react-icons": "^4.9.0",
+    "react-simplemde-editor": "^5.2.0",
+    "reactflow": "^11.7.2",
+    "sass": "^1.63.3"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --loader:.js=jsx",
+    "watch": "esbuild app/javascript/*.* --watch --bundle --outdir=app/assets/builds --loader:.js=jsx",
+    "watch:css": "sass --watch ./app/sass/:./app/assets/builds/sass --no-source-map --load-path=node_modules"
+  }
+}
