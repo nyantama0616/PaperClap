@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SimpleMde from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import highlightjs from "highlight.js";
 import "highlight.js/styles/github.css";
+import { useMarkdownEditorContext } from "../hooks/useMarkdownEditor";
 
 marked.setOptions({ breaks: true });
 
-interface MarkdownEditorProps {
-    previewElement: HTMLElement | null
-    initContent: string
-}
+// interface MarkdownEditorProps {
+//     previewElement: HTMLElement | null
+// }
 
-const MarkdownEditor = ({previewElement, initContent}: MarkdownEditorProps) => {
+const MarkdownEditor = () => {
     // ハイライトの設定
     marked.setOptions({
         highlight: (code, lang) => {
@@ -21,31 +21,27 @@ const MarkdownEditor = ({previewElement, initContent}: MarkdownEditorProps) => {
         },
     });
 
-    // const [markdownValue, setMarkdownValue] = useState("");
-    const [markdownValue, setMarkdownValue] = useState(initContent);
+    // const [markdownValue, setMarkdownValue] = useState(initContent);
+    const mdeCtxValue = useMarkdownEditorContext();
 
     const onChange = (value) => {
-        console.log("change!");
-        
-        setMarkdownValue(value);
-        if (previewElement) {
-            previewElement.innerHTML = DOMPurify.sanitize(marked(markdownValue));
-        }
+        mdeCtxValue.setContent(value);
     };
+
+    useEffect(() => {
+        if (mdeCtxValue.previewElement) {
+            mdeCtxValue.previewElement.innerHTML = DOMPurify.sanitize(marked(mdeCtxValue.content));
+        }
+    }, [mdeCtxValue.content]);
 
     return (
         <div className="markdown-editor">
-            <SimpleMde value={markdownValue} onChange={onChange}/>
-            {/* <div
-                dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(marked(markdownValue)),
-                }}
-            ></div> */}
+            {/* <SimpleMde value={markdownValue} onChange={onChange}/> */}
+            <SimpleMde value={mdeCtxValue.content} onChange={onChange}/>
         </div>
     );
 };
 
 // TODO: 画像を扱えるようにする https://zenn.dev/rinka/articles/b260e200cb5258
-
 
 export default MarkdownEditor;

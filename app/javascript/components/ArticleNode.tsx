@@ -1,5 +1,5 @@
 // モック用のNODEコンポーネント
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import { NodeDataType } from './MindMap';
 import { Handle, Position } from 'react-flow-renderer';
 import { AiOutlineEdit } from "react-icons/ai";
@@ -15,13 +15,31 @@ export const ArticleNode = ({ data, selected }: EventNodeProps) => {
     const selectedStyleBase = "border-2 max-w-3xl";
     const previewRef = useRef();
     const mdeCtxValue = useMarkdownEditorContext();
-    const [mdContent, setMdContent] = useState<string>("# hello");
+    const [mdContent, setMdContent] = useState<string>("");
+
+    function onClose() {
+        console.log("close!!!");
+        console.log(mdeCtxValue.content);
+
+        mdeCtxValue.setIsVisible(false);
+        // setMdContent(mdeCtxValue.content);
+        mdeCtxValue.setContent((prev) => {
+            setMdContent(prev);
+        });
+    }
 
     function openMde() {
+        // mdeCtxValue.onClose();
         mdeCtxValue.setPreviewElement(previewRef.current);
         mdeCtxValue.setContent(mdContent);
         mdeCtxValue.setIsVisible(true);
+        mdeCtxValue.setOnClose(() => onClose);
     }
+    
+    useEffect(() => {
+        console.log(mdContent);
+        
+    }, [mdContent]);
 
     return (
         <div className="article-node">

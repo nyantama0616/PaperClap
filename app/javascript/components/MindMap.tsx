@@ -19,6 +19,7 @@ import { useGetWindowSize } from '../hooks/useGetWindowSize';
 import { ArticleNode } from "./ArticleNode";
 import MarkdownEditor from "./MarkdownEditor";
 import { MarkdownEditorContextProvider, useMarkdownEditorContext } from "../hooks/useMarkdownEditor";
+import { AiOutlineCloseCircle } from "react-icons/ai";
 
 // TODO: 一旦ここに書いてあるが、この部分がPluginごとに異なる部分になる想定
 export type NodeDataType = {
@@ -118,7 +119,6 @@ function MindMap() {
                     onConnect={onConnect}
                     onEdgeUpdate={onEdgeUpdate}
                     nodeTypes={nodeTypes}
-                    // onSelectionChange={onSelectionChange}
                     fitView
                     fitViewOptions={fitViewOptions}
                 >
@@ -128,8 +128,11 @@ function MindMap() {
             ) : undefined}
             {mdeCtxValue.isVisible ?
                 // なぜかz-50つけないとエディター使えない
-                <div className="fixed bottom-0 z-50">
-                    <MarkdownEditor previewElement={mdeCtxValue.previewElement} initContent={mdeCtxValue.content} />
+                <div className="fixed bottom-0 z-50 flex">
+                    <MarkdownEditor />
+                    <div className="md-close-btn" onClick={mdeCtxValue.onClose}>
+                        <AiOutlineCloseCircle />
+                    </div>
                 </div>
             : null}
         </div>

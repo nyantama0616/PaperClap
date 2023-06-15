@@ -13,6 +13,8 @@ type MarkdownEditorContextItem = {
     setPreviewElement: Dispatch<SetStateAction<HTMLElement | null>>
     content: string
     setContent: Dispatch<SetStateAction<string>>
+    onClose: () => void
+    setOnClose: Dispatch<() => void>
 };
 
 const MarkdownEditorContext = createContext<MarkdownEditorContextItem | null>(null);
@@ -26,8 +28,10 @@ function newContextItem(): MarkdownEditorContextItem {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [previewElement, setPreviewElement] = useState<HTMLElement | null>(false);
     const [content, setContent] = useState<string>("");
+    const [onClose, setOnClose] = useState<() => void>(() => () => { });
+    
 
-    return { isVisible, setIsVisible, previewElement, setPreviewElement, content, setContent}
+    return { isVisible, setIsVisible, previewElement, setPreviewElement, content, setContent, onClose, setOnClose}
 }
 
 export const MarkdownEditorContextProvider = (props: { children: ReactNode }) => {
